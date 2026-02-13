@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neuro-Tracker | NTSGROW</title>
+    <style>
+        :root {
+            --primary: #00ffcc;
+            --dark: #050505;
+            --light: #ffffff;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .home-nav { position: absolute; top: 20px; left: 20px; }
+        .btn-home {
+            text-decoration: none; color: white; border: 1px solid #444;
+            padding: 8px 15px; border-radius: 5px; font-size: 0.8rem;
+        }
+
+        canvas {
+            background: #111;
+            border: 2px solid #222;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.1);
+        }
+
+        .info { margin-bottom: 15px; text-align: center; }
+        h1 { color: var(--primary); letter-spacing: 5px; margin: 0; }
+        
+        .start-btn {
+            margin-top: 20px;
+            padding: 12px 40px;
+            background: var(--primary);
+            color: black;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body onclick="startMusic()">
+
+    <nav class="home-nav">
+        <a href="index.html" class="btn-home">← NTSGROW HOME</a>
+    </nav>
+
+    <audio id="bgMusic" loop>
+        <source src="game10music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="info">
+        <h1>NEURO-TRACKER</h1>
+        <p id="msg">Watch the <span style="color:var(--primary)">GREEN</span> balls, then find them!</p>
+    </div>
+
+    <canvas id="gameCanvas" width="600" height="400"></canvas>
+
+    <button class="start-btn" id="startBtn" onclick="startGame()">Start Level 1</button>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const bgMusic = document.getElementById('bgMusic');
+        let balls = [];
+        let score = 0;
+        let gameState = 'IDLE'; // IDLE, HIGHLIGHT, MOVING, SELECTING
+        let musicStarted = false;
+
+        class Ball {
+            constructor(id, isTarget) {
+                this.id = id;
+                this.x = Math.random() * (canvas.width - 40) + 20;
+                this.y = Math.random() * (canvas.height - 40) + 20;
+                this.vx = (Math.random() - 0.5) * 8;
+                this.vy = (Math.random() - 0.5) * 8;
+                this.radius = 15;
+                this.isTarget = isTarget;
+                this.isSelected = false;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                if (gameState === 'HIGHLIGHT' && this.isTarget) {
+                    ctx.fillStyle = '#00ffcc';
+                } else if (this.isSelected) {
+                    ctx.fillStyle = '#555';
+                } else {
+                    ctx.fillStyle = '#333';
+                }
+                ctx.fill();
+                ctx.strokeStyle = '#555';
+                ctx.stroke();
+                ctx.closePath();
+            }
+
+            update() {
+                if (gameState === 'MOVING') {
+                    this.x += this.vx;
+                    this.y += this.vy;
+
+                    if (this.x + this.radius > canvas.width || this.x - this.radius < 0) this.vx *= -1;
+                    if (this.y + this.radius > canvas.height || this.y - this.radius < 0) this.vy *= -1;
+                }
+            }
+        }
+
+        function startMusic() { if(!musicStarted) { bgMusic.play().catch(()=>{}); musicStarted = true; } }
+
+        function startGame() {
+            balls = [];
+            for (let i = 0; i < 8; i++) {
+                balls.push(new Ball(i, i < 3)); // 3 balls are targets
+            }
+            startCycle();
+            document.getElementById('startBtn').style.visibility = 'hidden';
+        }
+
+        function startCycle() {
+            gameState = 'HIGHLIGHT';
+            document.getElementById('msg').innerText = "Memorize the targets...";
+            
+            setTimeout(() => {
+                gameState = 'MOVING';
+                document.getElementById('msg').innerText = "Tracking...";
+                setTimeout(() => {
+                    gameState = 'SELECTING';
+                    document.getElementById('msg').innerText = "Find the original targets!";
+                }, 4000);
+            }, 2000);
+        }
+
+        canvas.addEventListener('click', (e) => {
+            if (gameState !== 'SELECTING') return;
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            balls.forEach(ball => {
+                const dist = Math.sqrt((mouseX - ball.x)**2 + (mouseY - ball.y)**2);
+                if (dist < ball.radius && !ball.isSelected) {
+                    ball.isSelected = true;
+                    if (!ball.isTarget) {
+                        alert("Wrong Ball! Game Over.");
+                        location.reload();
+                    }
+                    checkWin();
+                }
+            });
+        });
+
+        function checkWin() {
+            const found = balls.filter(b => b.isSelected && b.isTarget).length;
+            if (found === 3) {
+                alert("Level Clear! Moving faster...");
+                startGame();
+            }
+        }
+
+        function loop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            balls.forEach(ball => {
+                ball.update();
+                ball.draw();
+            });
+            requestAnimationFrame(loop);
+        }
+        loop();
+    </script>
+</body>
+</html>

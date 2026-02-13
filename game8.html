@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound Sequence | NTSGROW</title>
+    <style>
+        :root {
+            --primary: #ffffff;
+            --dark: #0f0f0f;
+            --glow: #00ff88;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--primary);
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Home Button */
+        .home-nav { position: absolute; top: 20px; left: 20px; }
+        .btn-home {
+            text-decoration: none; color: white; border: 1px solid white;
+            padding: 8px 15px; border-radius: 4px; font-size: 0.8rem;
+        }
+
+        h1 { letter-spacing: 5px; text-transform: uppercase; margin-bottom: 5px; }
+        .level-tag { font-size: 1.5rem; margin-bottom: 30px; color: var(--glow); }
+
+        /* Directional Grid */
+        .control-pad {
+            display: grid;
+            grid-template-areas: 
+                ". up ."
+                "left . right"
+                ". down .";
+            gap: 20px;
+        }
+
+        .arrow {
+            width: 80px;
+            height: 80px;
+            background: #1a1a1a;
+            border: 2px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .arrow.active {
+            background: var(--glow);
+            color: black;
+            box-shadow: 0 0 30px var(--glow);
+            border-color: var(--glow);
+        }
+
+        .up { grid-area: up; }
+        .down { grid-area: down; }
+        .left { grid-area: left; }
+        .right { grid-area: right; }
+
+        .start-btn {
+            margin-top: 40px;
+            padding: 15px 40px;
+            background: transparent;
+            color: var(--glow);
+            border: 2px solid var(--glow);
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .start-btn:hover { background: var(--glow); color: black; }
+    </style>
+</head>
+<body onclick="initAudio()">
+
+    <nav class="home-nav">
+        <a href="index.html" class="btn-home">← BACK TO NTSGROW</a>
+    </nav>
+
+    <h1>Sound Sequence</h1>
+    <div class="level-tag">Memory Level: <span id="level">0</span></div>
+
+    <div class="control-pad">
+        <div class="arrow up" id="up">↑</div>
+        <div class="arrow left" id="left">←</div>
+        <div class="arrow right" id="right">→</div>
+        <div class="arrow down" id="down">↓</div>
+    </div>
+
+    <button class="start-btn" id="start-btn" onclick="startGame()">Initiate System</button>
+    <p style="margin-top: 20px; color: #555;">Listen. Remember. Repeat.</p>
+
+    <script>
+        let gameSequence = [];
+        let userSequence = [];
+        let level = 0;
+        let playing = false;
+        
+        // Audio Frequencies for different arrows
+        const sounds = {
+            'up': 440,    // A4
+            'down': 330,  // E4
+            'left': 392,  // G4
+            'right': 494  // B4
+        };
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function initAudio() { if (audioCtx.state === 'suspended') audioCtx.resume(); }
+
+        function playTone(freq) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.5);
+        }
+
+        function flashArrow(id) {
+            const el = document.getElementById(id);
+            playTone(sounds[id]);
+            el.classList.add('active');
+            setTimeout(() => el.classList.remove('active'), 300);
+        }
+
+        function startGame() {
+            level = 0;
+            gameSequence = [];
+            document.getElementById('start-btn').style.display = 'none';
+            nextRound();
+        }
+
+        function nextRound() {
+            userSequence = [];
+            level++;
+            document.getElementById('level').innerText = level;
+            const arrows = ['up', 'down', 'left', 'right'];
+            gameSequence.push(arrows[Math.floor(Math.random() * 4)]);
+            playSequence();
+        }
+
+        async function playSequence() {
+            playing = true;
+            for (let id of gameSequence) {
+                await new Promise(r => setTimeout(r, 600));
+                flashArrow(id);
+            }
+            playing = false;
+        }
+
+        document.querySelectorAll('.arrow').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                if (playing) return;
+                const id = e.target.id;
+                flashArrow(id);
+                userSequence.push(id);
+                checkSequence(userSequence.length - 1);
+            });
+        });
+
+        function checkSequence(step) {
+            if (userSequence[step] !== gameSequence[step]) {
+                alert("SYSTEM FAILURE! Final Level: " + level);
+                location.reload();
+                return;
+            }
+            if (userSequence.length === gameSequence.length) {
+                setTimeout(nextRound, 1000);
+            }
+        }
+    </script>
+</body>
+</html>

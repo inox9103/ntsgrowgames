@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Matrix | NTSGROW</title>
+    <style>
+        :root {
+            --primary: #2ecc71;
+            --dark: #1a1a1a;
+            --light: #f4f4f4;
+            --accent: #e67e22;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Home Button Style */
+        .home-nav {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .btn-home {
+            text-decoration: none;
+            color: var(--light);
+            border: 1px solid var(--light);
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .btn-home:hover {
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        h1 { color: var(--primary); margin-bottom: 5px; letter-spacing: 2px; }
+        .stats { margin-bottom: 20px; font-size: 1.2rem; font-weight: bold; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 80px);
+            grid-template-rows: repeat(4, 80px);
+            gap: 12px;
+            background: #252525;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+        }
+
+        .tile {
+            width: 80px;
+            height: 80px;
+            background: #333;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .tile.active { background: var(--primary); transform: scale(0.9); }
+        .tile.wrong { background: #e74c3c; animation: shake 0.3s; }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(5px); }
+            50% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        .btn-start {
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: var(--primary);
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        @media (max-width: 400px) {
+            .grid { grid-template-columns: repeat(4, 65px); gap: 8px; }
+            .tile { width: 65px; height: 65px; }
+        }
+    </style>
+</head>
+<body onclick="playMusic()">
+
+    <nav class="home-nav">
+        <a href="index.html" class="btn-home">← Back to NTSGROW</a>
+    </nav>
+
+    <audio id="bgMusic" loop>
+        <source src="game1music.mp3" type="audio/mpeg">
+    </audio>
+
+    <h1>Memory Matrix</h1>
+    <div class="stats">Level: <span id="level">1</span></div>
+
+    <div class="grid" id="grid"></div>
+
+    <button class="btn-start" onclick="startGame()" id="startBtn">Start Game</button>
+    <p id="msg" style="margin-top: 20px; color: #888;">Focus on the pattern!</p>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const levelDisplay = document.getElementById('level');
+        const bgMusic = document.getElementById('bgMusic');
+        let level = 1;
+        let sequence = [];
+        let userSequence = [];
+        let isClickable = false;
+        let musicStarted = false;
+
+        // Auto-play music handler
+        function playMusic() {
+            if(!musicStarted) {
+                bgMusic.play();
+                musicStarted = true;
+            }
+        }
+
+        for (let i = 0; i < 16; i++) {
+            const tile = document.createElement('div');
+            tile.classList.add('tile');
+            tile.addEventListener('click', () => handleTileClick(i));
+            grid.appendChild(tile);
+        }
+
+        function startGame() {
+            playMusic();
+            level = 1;
+            document.getElementById('startBtn').style.visibility = 'hidden';
+            nextLevel();
+        }
+
+        function nextLevel() {
+            userSequence = [];
+            isClickable = false;
+            levelDisplay.innerText = level;
+            
+            // Difficulty logic: More tiles as you progress
+            sequence = [];
+            let tilesToShow = 2 + Math.floor(level / 1.5); 
+            if(tilesToShow > 12) tilesToShow = 12; // Cap max difficulty
+
+            while(sequence.length < tilesToShow) {
+                let r = Math.floor(Math.random() * 16);
+                if(!sequence.includes(r)) sequence.push(r);
+            }
+
+            showSequence();
+        }
+
+        function showSequence() {
+            const tiles = document.querySelectorAll('.tile');
+            tiles.forEach(t => t.classList.remove('active', 'wrong'));
+
+            // Pattern flash speed increases with level
+            let displayTime = Math.max(1200 - (level * 50), 600); 
+
+            setTimeout(() => {
+                sequence.forEach(index => tiles[index].classList.add('active'));
+                setTimeout(() => {
+                    tiles.forEach(t => t.classList.remove('active'));
+                    isClickable = true;
+                }, displayTime);
+            }, 600);
+        }
+
+        function handleTileClick(index) {
+            if (!isClickable) return;
+            const tiles = document.querySelectorAll('.tile');
+
+            if (sequence.includes(index)) {
+                if (!userSequence.includes(index)) {
+                    userSequence.push(index);
+                    tiles[index].classList.add('active');
+                    
+                    if (userSequence.length === sequence.length) {
+                        isClickable = false;
+                        level++;
+                        setTimeout(nextLevel, 800);
+                    }
+                }
+            } else {
+                tiles[index].classList.add('wrong');
+                isClickable = false;
+                setTimeout(() => {
+                    alert("Game Over! Max Level: " + level);
+                    location.reload();
+                }, 300);
+            }
+        }
+    </script>
+</body>
+</html>
