@@ -3,215 +3,656 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NTSGROW | Elevate Your Intellect</title>
+    <title>NTSGROW · elevate your intellect</title>
+    <!-- Font Awesome 6 (free) for refined icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Base Styles */
-        :root {
-            --primary: #2ecc71;
-            --dark: #1a1a1a;
-            --light: #f4f4f4;
-            --accent: #3498db;
-        }
-
+        /* ----------------------------------------------
+            PROFESSIONAL, CLASSIC & REFINED DESIGN
+            deep tones · gold accents · elegant cards
+            + SEARCH BAR with live filter
+        ------------------------------------------------ */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
         }
 
         body {
-            background-color: var(--dark);
-            color: var(--light);
-            line-height: 1.6;
+            background-color: #0c0f15;
+            color: #eaeef2;
+            line-height: 1.5;
+            scroll-behavior: smooth;
         }
 
-        /* Navigation */
+        /* subtle pattern overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 30%, rgba(212, 175, 55, 0.02) 0%, transparent 30%),
+                radial-gradient(circle at 75% 80%, rgba(212, 175, 55, 0.015) 0%, transparent 35%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* classic deep navigation */
         nav {
-            padding: 1.5rem 10%;
+            padding: 1.2rem 8%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(0,0,0,0.8);
+            background: rgba(8, 12, 18, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 100;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.7);
+            flex-wrap: wrap;
         }
 
         .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--primary);
-            letter-spacing: 2px;
+            font-size: 1.9rem;
+            font-weight: 500;
+            letter-spacing: 4px;
+            color: #fff;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #f5e7b2 0%, #d4af37 80%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-right: 2px solid rgba(212, 175, 55, 0.4);
+            padding-right: 1.5rem;
         }
 
-        /* Hero Section */
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            font-weight: 400;
+            color: #cbd5e0;
+        }
+
+        .nav-links span {
+            font-size: 1rem;
+            transition: 0.2s;
+            cursor: default;
+            letter-spacing: 0.3px;
+            border-bottom: 1px solid transparent;
+        }
+
+        .nav-links span i {
+            margin-right: 6px;
+            color: #d4af37;
+        }
+
+        /* HERO — classic editorial look */
         .hero {
-            height: 60vh;
+            min-height: 50vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&q=80&w=1000');
+            background: linear-gradient(rgba(8, 12, 18, 0.75), rgba(8, 12, 18, 0.85)), 
+                        url('https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&q=85&w=1400');
             background-size: cover;
-            padding: 0 20px;
+            background-position: center 35%;
+            background-attachment: fixed;
+            padding: 3rem 1.5rem 4rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: inset 0 -10px 30px rgba(0,0,0,0.5);
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 10px;
+            font-size: 4.2rem;
+            font-weight: 500;
+            background: linear-gradient(to right, #ffffff, #f5e6b0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.3rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
         }
 
         .hero p {
+            font-size: 1.35rem;
+            color: #b9c7d9;
+            max-width: 700px;
+            font-weight: 300;
+            backdrop-filter: blur(2px);
+            border-top: 1px solid rgba(212, 175, 55, 0.25);
+            padding-top: 1.2rem;
+            margin-top: 0.8rem;
+        }
+
+        .hero p i {
+            color: #d4af37;
+            margin: 0 6px;
+        }
+
+        /* ---------- SEARCH SECTION ---------- */
+        .search-section {
+            display: flex;
+            justify-content: center;
+            margin: -2.5rem auto 2rem;
+            position: relative;
+            z-index: 20;
+            padding: 0 1rem;
+        }
+
+        .search-wrapper {
+            background: #1a212e;
+            border-radius: 60px;
+            padding: 0.4rem 0.4rem 0.4rem 2rem;
+            display: flex;
+            align-items: center;
+            width: min(650px, 100%);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 25px 40px -15px black, 0 0 0 1px rgba(212, 175, 55, 0.1) inset;
+            backdrop-filter: blur(8px);
+        }
+
+        .search-wrapper i {
+            color: #d4af37;
+            font-size: 1.4rem;
+            opacity: 0.9;
+            margin-right: 0.8rem;
+        }
+
+        #searchInput {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 1rem 0;
             font-size: 1.2rem;
-            color: #ccc;
-            max-width: 600px;
+            color: #f0f3f8;
+            outline: none;
+            letter-spacing: 0.5px;
         }
 
-        /* Game Grid */
+        #searchInput::placeholder {
+            color: #7b8ba3;
+            font-weight: 300;
+            font-style: italic;
+            letter-spacing: 0.3px;
+        }
+
+        .search-wrapper button {
+            background: #d4af37;
+            border: none;
+            border-radius: 50px;
+            padding: 0.9rem 2.2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0c0f15;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 18px -6px #00000080;
+            border: 1px solid #e6c868;
+        }
+
+        .search-wrapper button:hover {
+            background: #e6c868;
+            transform: scale(1.02);
+            box-shadow: 0 12px 24px -10px #d4af37;
+        }
+
+        .search-wrapper button i {
+            color: #0c0f15;
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        /* result count */
+        .result-count {
+            text-align: center;
+            margin: 1.2rem 0 0.2rem;
+            font-size: 1rem;
+            letter-spacing: 1.5px;
+            color: #b0c0d5;
+        }
+
+        .result-count span {
+            color: #d4af37;
+            font-weight: 500;
+            background: #1e2638;
+            padding: 0.2rem 1.2rem;
+            border-radius: 30px;
+            display: inline-block;
+            border: 1px solid #3d4b60;
+        }
+
+        /* container & grid */
         .container {
-            padding: 50px 10%;
+            padding: 2rem 8% 3rem;
+            max-width: 1600px;
+            margin: 0 auto;
         }
 
+        /* elegant section title with gold accent */
         .section-title {
             text-align: center;
-            margin-bottom: 40px;
-            font-size: 2rem;
-            border-bottom: 2px solid var(--primary);
-            display: inline-block;
-            left: 50%;
-            transform: translateX(-50%);
-            position: relative;
+            margin-bottom: 3rem;
+            font-size: 2.4rem;
+            font-weight: 350;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
         }
 
+        .section-title .line {
+            height: 1px;
+            width: 100px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        }
+
+        .section-title .text {
+            background: #1a1e28;
+            padding: 0.4rem 2rem;
+            border-radius: 40px;
+            font-size: 1.7rem;
+            font-weight: 350;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+        }
+
+        /* game grid – elegant cards */
         .game-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+            transition: 0.2s;
         }
 
-        /* Game Cards */
         .game-card {
-            background: #252525;
-            padding: 20px;
-            border-radius: 12px;
+            background: #141a24;
+            padding: 1.8rem 1.2rem 2rem;
+            border-radius: 24px;
             text-align: center;
-            transition: 0.3s transform ease;
-            border: 1px solid #333;
+            transition: all 0.25s ease;
+            border: 1px solid #2b3545;
+            box-shadow: 0 25px 40px -20px rgba(0,0,0,0.7);
+            backdrop-filter: blur(2px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* subtle gold gradient corner */
+        .game-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle at 0% 0%, rgba(212, 175, 55, 0.15), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+
+        .game-card:hover::after {
+            opacity: 1;
         }
 
         .game-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
+            transform: translateY(-8px);
+            border-color: #d4af37;
+            box-shadow: 0 30px 50px -15px #000, 0 0 0 1px rgba(212, 175, 55, 0.2);
+            background: #0f1722;
+        }
+
+        /* card icon (classic touch) */
+        .game-icon {
+            font-size: 2.6rem;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1e2635;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            border: 1px solid #3e4a5d;
+            color: #d4af37;
+            transition: 0.25s;
+            box-shadow: 0 10px 15px -8px black;
+        }
+
+        .game-card:hover .game-icon {
+            background: #2b364b;
+            border-color: #d4af37;
+            transform: scale(1.02);
+            color: #eed484;
         }
 
         .game-card h3 {
-            margin: 15px 0;
-            color: var(--primary);
+            font-size: 1.7rem;
+            font-weight: 400;
+            margin: 0.3rem 0 0.5rem;
+            color: #f0f3f8;
+            letter-spacing: 1px;
+            border-bottom: 1px dashed #3a4555;
+            padding-bottom: 0.6rem;
+            width: 100%;
+        }
+
+        .game-card p {
+            color: #a2b3c9;
+            font-size: 0.98rem;
+            margin: 0.5rem 0 1.5rem;
+            padding: 0 0.2rem;
+            flex: 1;
         }
 
         .btn {
-            display: inline-block;
-            padding: 10px 25px;
-            background: var(--primary);
-            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.8rem 2rem;
+            background: transparent;
+            color: #fff;
             text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 10px;
+            border-radius: 50px;
+            font-weight: 450;
+            font-size: 1rem;
+            letter-spacing: 0.8px;
+            border: 1px solid #d4af37;
+            transition: 0.2s;
+            margin-top: 0.5rem;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        .btn i {
+            font-size: 1rem;
+            color: #d4af37;
+            transition: 0.2s;
         }
 
         .btn:hover {
-            background: #27ae60;
+            background: #d4af37;
+            color: #0c0f15;
+            border-color: #d4af37;
+            box-shadow: 0 8px 18px -4px #d4af3740;
         }
 
-        /* Responsive Footer */
+        .btn:hover i {
+            color: #0c0f15;
+        }
+
+        /* no result message */
+        .no-result {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3.5rem;
+            background: #1a212e;
+            border-radius: 60px;
+            color: #b0c0d5;
+            border: 1px dashed #d4af37;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+        }
+        .no-result i {
+            color: #d4af37;
+            margin-right: 12px;
+        }
+
+        /* footer elegant */
         footer {
             text-align: center;
-            padding: 40px;
-            background: #111;
-            margin-top: 50px;
+            padding: 3rem 2rem;
+            background: #0a0e14;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            font-size: 1rem;
+            letter-spacing: 1.5px;
+            color: #96a7bb;
         }
 
-        /* Mobile Adjustments */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.2rem; }
-            .container { padding: 30px 5%; }
+        footer .gold {
+            color: #d4af37;
+            font-weight: 400;
+            margin: 0 5px;
         }
+
+        footer i {
+            color: #d4af37;
+            margin: 0 8px;
+            font-size: 0.9rem;
+        }
+
+        /* responsive */
+        @media (max-width: 800px) {
+            .hero h1 { font-size: 2.8rem; }
+            .hero p { font-size: 1.1rem; }
+            .logo { font-size: 1.6rem; letter-spacing: 2px; }
+            .nav-links { gap: 1.5rem; }
+            .section-title .text { font-size: 1.3rem; padding: 0.3rem 1rem; }
+            .search-wrapper { padding-left: 1.2rem; }
+            #searchInput { font-size: 1rem; }
+            .search-wrapper button { padding: 0.7rem 1.5rem; }
+        }
+
+        @media (max-width: 550px) {
+            nav { padding: 1rem 5%; justify-content: center; flex-direction: column; }
+            .logo { border-right: none; padding-right: 0; margin-bottom: 0.5rem; }
+            .nav-links { width: 100%; justify-content: center; }
+            .hero h1 { font-size: 2.2rem; }
+            .game-grid { gap: 1.2rem; }
+            .search-wrapper { flex-wrap: wrap; background: transparent; border: none; box-shadow: none; padding: 0; gap: 0.8rem; }
+            .search-wrapper i { display: none; }
+            #searchInput { background: #1a212e; border-radius: 60px; padding: 1rem 1.5rem; border: 1px solid #d4af37; width: 100%; }
+            .search-wrapper button { width: 100%; justify-content: center; }
+        }
+
+        /* classic scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #111722; }
+        ::-webkit-scrollbar-thumb { background: #3e4c62; border-radius: 20px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d4af37; }
     </style>
 </head>
 <body>
 
+    <!-- classic navigation with elegant icons -->
     <nav>
         <div class="logo">NTSGROW</div>
+        <div class="nav-links">
+            <span><i class="fas fa-chess-queen"></i> GAMES</span>
+            <span><i class="fas fa-brain"></i> COGNITIVE</span>
+            <span><i class="fas fa-spa"></i> FOCUS</span>
+        </div>
     </nav>
 
+    <!-- hero with refined overlay -->
     <header class="hero">
-        <h1>Sharpen Your Mind</h1>
-        <p>Challenge your brain with our hand-crafted logic games and cognitive exercises. Growth starts here.</p>
+        <h1>SHARPEN YOUR MIND</h1>
+        <p><i class="fas fa-asterisk"></i> challenge your intellect with artfully crafted logic games <i class="fas fa-asterisk"></i></p>
     </header>
 
-    <main class="container">
-        <center><h2 class="section-title">Featured Brain Games</h2></center>
-        
-        <div class="game-grid">
-            <div class="game-card">
-                <h3>Memory Matrix</h3>
-                <p>Enhance your short-term memory and pattern recognition.</p>
-                <a href="game1.html" class="btn">Play Now</a>
-            </div>
-
-            <div class="game-card">
-                <h3>Logic Flow</h3>
-                <p>Master the art of problem-solving through complex logic puzzles.</p>
-                <a href="game2.html" class="btn">Play Now</a>
-            </div>
-
-            <div class="game-card">
-                <h3>Quick Math</h3>
-                <p>Boost your calculation speed and numerical accuracy.</p>
-                <a href="game3.html" class="btn">Play Now</a>
-            </div>
-            <div class="game-card">
-                <h3>Pattern Master</h3>
-                <p>Memorize the sequence of lights and repeat it to test your focus</p>
-                <a href="game4.html" class="btn">Play Now</a>
+    <!-- SEARCH BAR - LIVE FILTER -->
+    <div class="search-section">
+        <div class="search-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search any game... (e.g. memory, reflex, math)" autocomplete="off">
+            <button id="searchBtn"><i class="fas fa-filter"></i> FIND</button>
         </div>
-            <div class="game-card">
+    </div>
+
+    <!-- main collection -->
+    <main class="container">
+        <div class="section-title">
+            <span class="line"></span>
+            <span class="text">featured brain games</span>
+            <span class="line"></span>
+        </div>
+
+        <!-- dynamic counter -->
+        <div class="result-count" id="resultCount"><span>10 games available</span></div>
+
+        <div class="game-grid" id="gameGrid">
+            <!-- Memory Matrix -->
+            <div class="game-card" data-name="Memory Matrix" data-tags="memory pattern short-term">
+                <div class="game-icon"><i class="fas fa-table"></i></div>
+                <h3>Memory Matrix</h3>
+                <p>short‑term memory & pattern recognition</p>
+                <a href="game1.html" class="btn"><span>play now</span> <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <!-- Logic Flow -->
+            <div class="game-card" data-name="Logic Flow" data-tags="logic puzzle problem solving reasoning">
+                <div class="game-icon"><i class="fas fa-project-diagram"></i></div>
+                <h3>Logic Flow</h3>
+                <p>complex puzzles & sequential reasoning</p>
+                <a href="game2.html" class="btn"><span>play now</span> <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <!-- Quick Math -->
+            <div class="game-card" data-name="Quick Math" data-tags="math calculation numbers speed">
+                <div class="game-icon"><i class="fas fa-square-root-alt"></i></div>
+                <h3>Quick Math</h3>
+                <p>calculation speed & numerical agility</p>
+                <a href="game3.html" class="btn"><span>play now</span> <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <!-- Pattern Master -->
+            <div class="game-card" data-name="Pattern Master" data-tags="pattern light sequence focus">
+                <div class="game-icon"><i class="fas fa-lightbulb"></i></div>
+                <h3>Pattern Master</h3>
+                <p>memorise light sequences, boost focus</p>
+                <a href="game4.html" class="btn"><span>play now</span> <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <!-- Orbital Reflex -->
+            <div class="game-card" data-name="Orbital Reflex" data-tags="reflex hand-eye coordination reaction">
+                <div class="game-icon"><i class="fas fa-bullseye"></i></div>
                 <h3>Orbital Reflex</h3>
-                <p>Test your reflexes and hand-eye coordination in this fast-paced game.</p>
-                <a href="game5.html" class="btn">Play Now</a>
+                <p>hand–eye coordination & fast reaction</p>
+                <a href="game5.html" class="btn"><span>play now</span> <i class="fas fa-arrow-right"></i></a>
             </div>
-            <div class="game-card">
+            <!-- Cipher Dash -->
+            <div class="game-card" data-name="Cipher Dash" data-tags="cipher code decryption speed">
+                <div class="game-icon"><i class="fas fa-shield-alt"></i></div>
                 <h3>Cipher Dash</h3>
-                <p>Decipher the code as quickly as possible to score points and climb the leaderboard.</p>
-                <a href="game6.html" class="btn">Play Now</a>
+                <p>decipher codes under pressure</p>
+                <a href="game6.html" class="btn"><span>play now</span> <i class="fas fa-arrow-right"></i></a>
             </div>
-            <div class="game-card">
+            <!-- Grid Hunt -->
+            <div class="game-card" data-name="Grid Hunt" data-tags="grid numbers hunt sequence clock">
+                <div class="game-icon"><i class="fas fa-th"></i></div>
                 <h3>Grid Hunt</h3>
-                <p>Find numbers in sequence on a grid against the clock.</p>
-                <a href="game7.html" class="btn">Play Now</a>  
+                <p>find numbers in sequence, against clock</p>
+                <a href="game7.html" class="btn"><span>play now</span> <i class="fas fa-arrow-right"></i></a>
             </div>
-            <div class="game-card">
+            <!-- Sound Sequence -->
+            <div class="game-card" data-name="Sound Sequence" data-tags="sound auditory memory tone">
+                <div class="game-icon"><i class="fas fa-music"></i></div>
                 <h3>Sound Sequence</h3>
-                <p>Memorize and replicate the sequence of sounds to test your auditory memory.</p>
-                <a href="game8.html" class="btn">Play Now</a>
+                <p>auditory memory & tone replication</p>
+                <a href="game8.html" class="btn"><span>play now</span> <i class="fas fa-arrow-right"></i></a>
             </div>
-            <div class="game-card">
+            <!-- Dual Focus -->
+            <div class="game-card" data-name="Dual Focus" data-tags="dual focus shapes same different">
+                <div class="game-icon"><i class="fas fa-clone"></i></div>
                 <h3>Dual Focus</h3>
-                <p>Identify if two shapes are the same or different under time pressure.</p>
-                <a href="game9.html" class="btn">Play Now</a>
+                <p>same/different shapes under time</p>
+                <a href="game9.html" class="btn"><span>play now</span> <i class="fas fa-arrow-right"></i></a>
             </div>
-            <div class="game-card">
-                <h3>Neuro-Tracker</h3>
-                <p>Track and find the green balls as they move around the canvas.</p>
-                <a href="game10.html" class="btn">Play Now</a>
+            <!-- Neuro-Tracker -->
+            <div class="game-card" data-name="Neuro-Tracker" data-tags="neuro tracker visual moving balls">
+                <div class="game-icon"><i class="fas fa-eye"></i></div>
+                <h3>Neuro‑Tracker</h3>
+                <p>track moving green balls, visual focus</p>
+                <a href="game10.html" class="btn"><span>play now</span> <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
     </main>
 
+    <!-- footer with classic style -->
     <footer>
-        <p>&copy; 2026 NTSGROW - All Rights Reserved.</p>
+        <i class="fas fa-circle"></i> 
+        <span class="gold">©</span> 2026 NTSGROW — all rights reserved 
+        <span class="gold">✦</span> designed with <i class="fas fa-heart" style="color: #d4af37;"></i> for intellectual growth 
+        <i class="fas fa-circle"></i>
     </footer>
 
+    <!-- live search script -->
+    <script>
+        (function() {
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const gameCards = Array.from(document.querySelectorAll('.game-card'));
+            const gameGrid = document.getElementById('gameGrid');
+            const resultSpan = document.querySelector('#resultCount span');
+
+            function updateFilter() {
+                const term = searchInput.value.trim().toLowerCase();
+                let visibleCount = 0;
+
+                gameCards.forEach(card => {
+                    const name = card.getAttribute('data-name').toLowerCase();
+                    const tags = card.getAttribute('data-tags').toLowerCase();
+                    const description = card.querySelector('p').innerText.toLowerCase();
+                    const searchableText = name + ' ' + tags + ' ' + description;
+
+                    if (term === '' || searchableText.includes(term)) {
+                        card.style.display = 'flex';   // game cards use flex column
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // update result count text
+                if (term === '') {
+                    resultSpan.innerText = `${visibleCount} games available`;
+                } else {
+                    resultSpan.innerText = `${visibleCount} result${visibleCount !== 1 ? 's' : ''} for “${searchInput.value}”`;
+                }
+
+                // if nothing visible, optionally show a placeholder (already handled by grid but we can inject)
+                let noResultMsg = document.querySelector('.no-result');
+                if (visibleCount === 0) {
+                    if (!noResultMsg) {
+                        noResultMsg = document.createElement('div');
+                        noResultMsg.className = 'no-result';
+                        noResultMsg.innerHTML = '<i class="fas fa-compass"></i> no games match your search · try another keyword';
+                        gameGrid.appendChild(noResultMsg);
+                    }
+                } else {
+                    if (noResultMsg) noResultMsg.remove();
+                }
+            }
+
+            // trigger search on input
+            searchInput.addEventListener('input', updateFilter);
+
+            // search button also calls filter (for consistency)
+            searchBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                updateFilter();
+            });
+
+            // initialise
+            updateFilter();
+        })();
+    </script>
 </body>
 </html>
